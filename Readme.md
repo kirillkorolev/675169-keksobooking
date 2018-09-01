@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Кирилл Королёв](https://up.htmlacademy.ru/javascript/15/user/675169).
-* Наставник: `Неизвестно`.
+* Наставник: `Михаил Новиков`.
 
 ---
 
