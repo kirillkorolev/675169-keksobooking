@@ -1,14 +1,16 @@
 'use strict';
 
-var getRandomValue = function(arr) {
-  var value = Math.floor(Math.random() * arr.length);
-  return arr[value];
-};
-
 var getRandomInRange = function(min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   rand = Math.round(rand);
   return rand;
+};
+
+var getRandomValue = function(arr) {
+  var min = 0;
+  var max = arr.length - 1;
+  var value = getRandomInRange();
+  return arr[value];
 };
 
 var getPhotos = function(array) {
@@ -35,7 +37,7 @@ var titleValues = [
   'Неуютное бунгало по колено в воде'
 ];
 
-var typeValues = [palace, flat, house, bungalo];
+var typeValues = ['palace', 'flat', 'house', 'bungalo'];
 
 var checkinValues = ['12:00', '13:00', '14:00'];
 
@@ -56,33 +58,44 @@ var photosValues = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-var getOffer = function(offer) {
-  var advertisements = [];
-  for (var i = 0; i < 8; i++) {
-    author = {
-      avatar: 'img/avatars/user0' + i + '.png'
-    };
-    offer = {
-      title: getRandomValue(title),
-      address: 'location.x, location.y',
-      price: getRandomInRange(1000, 1000000),
-      type: getRandomValue(type),
-      rooms: getRandomInRange(1, 5),
-      guests: Math.Floor(Math.Random() * 10),
-      checkin: getRandomValue(checkinValues),
-      checkout: getRandomValue(checkoutValues),
-      features: getfeatures(features),
-      description: ' ',
-      photos: getPhotos(photos)
-    };
-    location = {
-      x: 100,
-      y: getRandomInRange(130, 630)
-    };
-  }
+var author = {
+  avatar: 'img/avatars/user0' + i + '.png'
 };
 
-var advertisements = getOffer();
+var offer = {
+  title: getRandomValue(title),
+  address: location.x + ', ' + location.y,
+  price: getRandomInRange(1000, 1000000),
+  type: getRandomValue(type),
+  rooms: getRandomInRange(1, 5),
+  guests: Math.Floor(Math.Random() * 10),
+  checkin: getRandomValue(checkinValues),
+  checkout: getRandomValue(checkoutValues),
+  features: getfeatures(features),
+  description: ' ',
+  photos: getPhotos(photos)
+};
+
+var location = {
+  x: location.x,
+  y: location.y
+};
+
+var getAdvertisement = function(index) {
+  return {
+    author: author,
+    offer: offer,
+    location: location
+  };
+};
+
+var getAdvertisements = function() {
+  array = [];
+  for (var i = 0; i < 8; i++) {
+    array[i] = getAdvertisement(i);
+  }
+  return array;
+};
 
 var price = document.querySelector('.map');
 price.classList.remove('.map--faded');
