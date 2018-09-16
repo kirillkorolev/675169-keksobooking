@@ -9,17 +9,8 @@ var getRandomInRange = function(min, max) {
 var getRandomValue = function(arr) {
   var min = 0;
   var max = arr.length - 1;
-  var value = getRandomInRange();
+  var value = getRandomInRange(min, max);
   return arr[value];
-};
-
-var getPhotos = function(array) {
-  for (var i = 0; i < arr.length; i++) {
-    var j = Math.Floor(Math.Random() * (i + 1));
-    var newArray = array[j];
-    array[i] = array[j];
-  }
-  return newArray;
 };
 
 var getfeatures = function(array) {
@@ -58,30 +49,31 @@ var photosValues = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-var author = {
-  avatar: 'img/avatars/user0' + i + '.png'
-};
-
-var offer = {
-  title: getRandomValue(title),
-  address: location.x + ', ' + location.y,
-  price: getRandomInRange(1000, 1000000),
-  type: getRandomValue(type),
-  rooms: getRandomInRange(1, 5),
-  guests: Math.Floor(Math.Random() * 10),
-  checkin: getRandomValue(checkinValues),
-  checkout: getRandomValue(checkoutValues),
-  features: getfeatures(features),
-  description: ' ',
-  photos: getPhotos(photos)
-};
-
-var location = {
-  x: location.x,
-  y: location.y
-};
-
 var getAdvertisement = function(index) {
+  var author = {
+    avatar: 'img/avatars/user0' + index + '.png'
+  },
+
+  var location = {
+    x: 100,
+    y: getRandomInRange(130, 630)
+  },
+
+  var offer = {
+    title: getRandomValue(title),
+    address: location.x + ', ' + location.y,
+    price: getRandomInRange(1000, 1000000),
+    type: getRandomValue(type),
+    rooms: getRandomInRange(1, 5),
+    guests: Math.Floor(Math.Random() * 10),
+    checkin: getRandomValue(checkinValues),
+    checkout: getRandomValue(checkoutValues),
+    features: getfeatures(features),
+    description: ' ',
+    photos: photosValues.sort(function() {
+      return Math.random() - 0.5;
+     })
+  }
   return {
     author: author,
     offer: offer,
@@ -97,6 +89,8 @@ var getAdvertisements = function() {
   return array;
 };
 
+var advertisements = getAdvertisements ();
+
 var price = document.querySelector('.map');
 price.classList.remove('.map--faded');
 
@@ -109,14 +103,15 @@ var template = document
 for (var i = 0; i < 8; i++) {
   var element = template.cloneNode(true);
   element.advertisements[i];
+
   element.style =
     'left: ' +
-    advertisements.offer.location.x +
+    advertisements[i].location.x +
     ' px; top: ' +
-    advertisements.offer.location.y +
+    advertisements[i].location.y +
     ' px;';
-  element.src = advertisements.author.avatar;
-  element.alt = advertisements.offer.title;
+  element.src = advertisements[i].author.avatar;
+  element.alt = advertisements[i].offer.title;
   element.children[0].textContent = i;
   mapElements[i].appendChild(element);
 }
