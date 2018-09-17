@@ -13,8 +13,16 @@ var getRandomValue = function (arr) {
   return arr[value];
 };
 
-var getfeatures = function (array) {
-  var arr = arr.slice(Math.floor(Math.random() * array.length));
+var getFeatures = function (array) {
+  array = array.slice(0, Math.floor(Math.random() * array.length));
+  return array;
+};
+
+var getPhotos = function (array) {
+  array.sort(function () {
+    return Math.random() - 0.5;
+  });
+  return getPhotos;
 };
 
 var titleValues = [
@@ -68,11 +76,9 @@ var getAdvertisement = function (index) {
     guests: Math.floor(Math.random() * 10),
     checkin: getRandomValue(checkinValues),
     checkout: getRandomValue(checkoutValues),
-    features: getfeatures(featuresValues),
+    features: getFeatures(featuresValues),
     description: ' ',
-    photos: photosValues.sort(function () {
-      return Math.random() - 0.5;
-    })
+    photos: getPhotos(photosValues)
   };
 
   return {
