@@ -58,12 +58,13 @@ var photosValues = [
 ];
 
 var getAdvertisement = function (index) {
+  index = index + 1;
   var author = {
     avatar: 'img/avatars/user0' + index + '.png'
   };
 
   var location = {
-    x: 100,
+    x: getRandomInRange(0, 1200),
     y: getRandomInRange(130, 630)
   };
 
@@ -98,28 +99,23 @@ var getAdvertisements = function () {
 
 var advertisements = getAdvertisements();
 
-var price = document.querySelector('.map');
-price.classList.remove('.map--faded');
+var map = document.querySelector('.map');
+map.classList.remove('.map--faded');
 
-var mapElements = document.querySelector('.pin');
-
-var template = document
-  .querySelector('.map__pin')
-  .content.querySelector('button');
+var template = document.querySelector('.map__pin');
 
 for (var i = 0; i < advertisements.length; i++) {
   var element = template.cloneNode(true);
-
+  var image = element.querySelector('img');
   element.style.left = advertisements[i].location.x + 'px';
   element.style.top = advertisements[i].location.y + 'px';
-  element.src = advertisements[i].author.avatar;
-  element.alt = advertisements[i].offer.title;
+  image.src = advertisements[i].author.avatar;
+  image.alt = advertisements[i].offer.title;
   element.children[0].textContent = i;
-  mapElements[i].appendChild(element);
+  map.appendChild(element);
 }
 
 var newPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
-fragment.appendChild(mapElements);
 newPins.appendChild(fragment);
