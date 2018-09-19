@@ -102,10 +102,10 @@ var advertisements = getAdvertisements();
 var map = document.querySelector('.map');
 map.classList.remove('.map--faded');
 
-var template = document.querySelector('.map__pin');
+var template = document.querySelector('#pin').content;
 
 for (var i = 0; i < advertisements.length; i++) {
-  var element = template.cloneNode(true);
+  var element = template.querySelector('.map__pin').cloneNode(true);
   var image = element.querySelector('img');
   element.style.left = advertisements[i].location.x + 'px';
   element.style.top = advertisements[i].location.y + 'px';
@@ -119,3 +119,43 @@ var newPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
 newPins.appendChild(fragment);
+
+template = document.querySelector('#card').content;
+var listing = template.querySelector('.map__card').cloneNode(true);
+listing.classList.add('card');
+
+advertisements.offer.type.flat = 'Квартира';
+advertisements.offer.type.palace = 'Дворец';
+advertisements.offer.type.house = 'Дом';
+advertisements.offer.type.bungalo = 'Бунагло';
+
+listing.querySelector('.popup__title').textContent =
+  advertisements[0].offer.title;
+listing.querySelector('.popup__text--address').textContent =
+  advertisements[0].offer.address;
+listing.querySelector('.popup__text--price').textContent =
+  advertisements[0].offer.price + '₽/ночь';
+listing.querySelector('.popup__type').textContent =
+  advertisements[0].offer.type;
+listing.querySelector('.popup__text--capacity').textContent =
+  advertisements[0].offer.rooms +
+  ' комнаты для ' +
+  advertisements[0].offer.guests +
+  ' гостей';
+listing.querySelector('.popup__text--time').textContent =
+  'Заезд после ' +
+  advertisements[0].offer.checkin +
+  ' , выезд до ' +
+  advertisements[0].offer.checkout;
+listing.querySelector('.popup__features').textContent =
+  advertisements[0].offer.features;
+listing.querySelector('.popup__description').textContent =
+  advertisements[0].offer.description;
+
+var listingPhoto = listing.querySelector('.popup__photos').content;
+listingPhoto.src = advertisements[0].offer.photos;
+
+var avatar = listing.querySelector('.popup__avatar');
+avatar.src = advertisements[0].offer.author.avatar;
+
+map.insertBefore(listing, document.map.map__filters - container);
