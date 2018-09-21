@@ -1,30 +1,5 @@
 'use strict';
 
-var getRandomInRange = function (min, max) {
-  var rand = min - 0.5 + Math.random() * (max - min + 1);
-  rand = Math.round(rand);
-  return rand;
-};
-
-var getRandomValue = function (arr) {
-  var min = 0;
-  var max = arr.length - 1;
-  var value = getRandomInRange(min, max);
-  return arr[value];
-};
-
-var getFeatures = function (array) {
-  array = array.slice(0, Math.floor(Math.random() * array.length));
-  return array;
-};
-
-var getPhotos = function (array) {
-  array.sort(function () {
-    return Math.random() - 0.5;
-  });
-  return array;
-};
-
 var titleValues = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -57,6 +32,37 @@ var photosValues = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
+var offerTypes = {
+  flat: 'Квартира',
+  palace: 'Дворец',
+  house: 'Дом',
+  bungalo: 'Бунагло'
+};
+
+var getRandomInRange = function (min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+  rand = Math.round(rand);
+  return rand;
+};
+
+var getRandomValue = function (arr) {
+  var min = 0;
+  var max = arr.length - 1;
+  var value = getRandomInRange(min, max);
+  return arr[value];
+};
+
+var getFeatures = function () {
+  return featuresValues.slice(0, getRandomInRange(0, featuresValues.length));
+};
+
+var getPhotos = function () {
+  photosValues.sort(function () {
+    return Math.random() - 0.5;
+  });
+  return photosValues;
+};
+
 var getAdvertisement = function (index) {
   index = index + 1;
   var author = {
@@ -77,9 +83,9 @@ var getAdvertisement = function (index) {
     guests: Math.floor(Math.random() * 10),
     checkin: getRandomValue(checkinValues),
     checkout: getRandomValue(checkoutValues),
-    features: getFeatures(featuresValues),
+    features: getFeatures(),
     description: ' ',
-    photos: getPhotos(photosValues)
+    photos: getPhotos()
   };
 
   return {
@@ -125,34 +131,33 @@ var templateListing = document.querySelector('#card').content;
 var listing = templateListing.cloneNode(true);
 
 var advertisement = advertisements[0];
-var offerTypes = {
-  flat: 'Квартира',
-  palace: 'Дворец',
-  house: 'Дом',
-  bungalo: 'Бунагло'
-};
 
-listing.querySelector('.popup__title').textContent = advertisement.offer.title;
-listing.querySelector('.popup__text--address').textContent =
-  advertisement.offer.address;
-listing.querySelector('.popup__text--price').textContent =
-  advertisement.offer.price + '₽/ночь';
-listing.querySelector('.popup__type').textContent =
-  offerTypes[advertisements[0].offer.type];
-listing.querySelector('.popup__text--capacity').textContent =
+var textCapacity =
   advertisement.offer.rooms +
   ' комнаты для ' +
   advertisement.offer.guests +
   ' гостей';
-listing.querySelector('.popup__text--time').textContent =
+var textTime =
   'Заезд после ' +
   advertisement.offer.checkin +
   ' , выезд до ' +
   advertisement.offer.checkout;
-listing.querySelector('.popup__features').textContent =
-  advertisement.offer.features;
-listing.querySelector('.popup__description').textContent =
-  advertisement.offer.description;
+
+var setListingTextContent = function (popupName, offerName) {
+  listing.querySelector(popupName).textContent = offerName;
+};
+
+setListingTextContent('.popup__title', advertisement.offer.title);
+setListingTextContent('.popup__text--address', advertisement.offer.adress);
+setListingTextContent(
+    '.popup__text--price',
+    advertisement.offer.price + '₽/ночь'
+);
+setListingTextContent('.popup__type', offerTypes[advertisements[0].offer.type]);
+setListingTextContent('.popup__text--capacity', textCapacity);
+setListingTextContent('.popup__text--time', textTime);
+setListingTextContent('.popup__features', advertisement.offer.features);
+setListingTextContent('.popup__description', advertisement.offer.description);
 
 var listingPhoto = listing.querySelector('.popup__photos');
 var popupPhoto = listingPhoto.querySelector('img');
