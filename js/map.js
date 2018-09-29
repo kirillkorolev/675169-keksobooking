@@ -240,3 +240,14 @@ createPins();
 
 var mapPinMain = document.querySelector('.map__pin--main');
 mapPinMain.addEventListener('mouseup', enableForm);
+
+var numberRooms = document.querySelector('#room_number option');
+var numberGuests = document.querySelector('#capacity option');
+
+numberGuests.addEventListener('click', function () {
+  if (numberRooms.value >= numberGuests || numberRooms.value === 100) {
+    numberRooms.setCustomValidity(
+        'Не соответствие количества комнат количеству возможных гостей'
+    );
+  }
+});
