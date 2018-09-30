@@ -241,13 +241,55 @@ createPins();
 var mapPinMain = document.querySelector('.map__pin--main');
 mapPinMain.addEventListener('mouseup', enableForm);
 
-var numberRooms = document.querySelector('#room_number option');
-var numberGuests = document.querySelector('#capacity option');
+var numberRooms = document.querySelector('#room_number');
+var numberGuests = document.querySelector('#capacity');
 
-numberGuests.addEventListener('click', function () {
-  if (numberRooms.value >= numberGuests || numberRooms.value === 100) {
+numberGuests.addEventListener('change', function (event) {
+  if (numberRooms <= numberGuests && numberRooms !== 100) {
     numberRooms.setCustomValidity(
         'Не соответствие количества комнат количеству возможных гостей'
     );
   }
+});
+
+//
+
+var formAddress = document.querySelector('#address');
+
+var markerHandle = document.querySelector('.map__pin--main');
+markerHandle.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    markerHandle.style.top = markerHandle.offsetTop - shift.y + 'px';
+    markerHandle.style.left = markerHandle.offsetLeft - shift.x + 'px';
+
+    formAddress.value = markerHandle.style.top + ', ' + markerHandle.style.left;
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
 });
