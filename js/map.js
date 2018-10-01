@@ -281,9 +281,9 @@ markerHandle.addEventListener('mousedown', function (evt) {
 
     var x = markerHandle.offsetLeft - shift.x;
     if (x < 0) {
-      setPositionX(-20);
-    } else if (x > 1160) {
-      setPositionX(1160);
+      setPositionX(0);
+    } else if (x > 1200 - 40 * 1.5) {
+      setPositionX(1200 - 40 * 1.5);
     } else {
       setPositionX(x);
     }
@@ -293,10 +293,10 @@ markerHandle.addEventListener('mousedown', function (evt) {
     };
 
     var y = markerHandle.offsetTop - shift.y;
-    if (y < 130) {
-      setPositionY(118);
-    } else if (y > 630) {
-      setPositionY(652);
+    if (y < 130 - 44) {
+      setPositionY(130);
+    } else if (y > 630 - 44) {
+      setPositionY(630);
     } else {
       setPositionY(y);
     }
