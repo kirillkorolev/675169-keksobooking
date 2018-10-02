@@ -244,13 +244,22 @@ mapPinMain.addEventListener('mouseup', enableForm);
 var numberRooms = document.querySelector('#room_number');
 var numberGuests = document.querySelector('#capacity');
 
-numberGuests.addEventListener('change', function () {
-  if (numberRooms <= numberGuests && numberRooms !== 100) {
-    numberRooms.setCustomValidity(
-        'Не соответствие количества комнат количеству возможных гостей'
-    );
+var validate = function () {
+  var str = '';
+  if (
+    +numberRooms.value < +numberGuests.value ||
+    (+numberRooms.value === 100 && +numberGuests.value !== 0) ||
+    (+numberRooms.value !== 100 && +numberGuests.value === 0)
+  ) {
+    str = 'Несоответствие количества комнат количеству возможных гостей';
   }
-});
+  numberRooms.setCustomValidity(str);
+};
+
+validate();
+
+numberGuests.addEventListener('change', validate);
+numberRooms.addEventListener('change', validate);
 
 var formAddress = document.querySelector('#address');
 
@@ -263,6 +272,8 @@ markerHandle.addEventListener('mousedown', function (evt) {
     y: evt.clientY
   };
   var onMouseMove = function (moveEvt) {
+    var markerHeight = 84;
+    var marketWidth = 65;
     moveEvt.preventDefault();
 
     var shift = {
@@ -280,10 +291,11 @@ markerHandle.addEventListener('mousedown', function (evt) {
     };
 
     var x = markerHandle.offsetLeft - shift.x;
+
     if (x < 0) {
       setPositionX(0);
-    } else if (x > 1200 - 40 * 1.5) {
-      setPositionX(1200 - 40 * 1.5);
+    } else if (x > 1200 - marketWidth) {
+      setPositionX(1200 - marketWidth);
     } else {
       setPositionX(x);
     }
@@ -293,14 +305,14 @@ markerHandle.addEventListener('mousedown', function (evt) {
     };
 
     var y = markerHandle.offsetTop - shift.y;
-    if (y < 130 - 44) {
-      setPositionY(130);
-    } else if (y > 630 - 44) {
+    if (y < 120) {
+      setPositionY(130 + markerHeight);
+    } else if (y > 630) {
       setPositionY(630);
     } else {
       setPositionY(y);
     }
-    formAddress.value = x + 40 / 2 + ', ' + (y + 44);
+    formAddress.value = x + marketWidth / 2 + ', ' + y;
   };
 
   var onMouseUp = function (upEvt) {
