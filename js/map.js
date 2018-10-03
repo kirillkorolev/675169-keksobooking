@@ -273,7 +273,7 @@ markerHandle.addEventListener('mousedown', function (evt) {
   };
   var onMouseMove = function (moveEvt) {
     var markerHeight = 84;
-    var marketWidth = 65;
+    var marketWidth = 62;
     moveEvt.preventDefault();
 
     var shift = {
@@ -305,14 +305,14 @@ markerHandle.addEventListener('mousedown', function (evt) {
     };
 
     var y = markerHandle.offsetTop - shift.y;
-    if (y < 120) {
-      setPositionY(130 + markerHeight);
+    if (y < 130) {
+      setPositionY(130);
     } else if (y > 630) {
       setPositionY(630);
     } else {
       setPositionY(y);
     }
-    formAddress.value = x + marketWidth / 2 + ', ' + y;
+    formAddress.value = x + marketWidth / 2 + ', ' + (y + markerHeight);
   };
 
   var onMouseUp = function (upEvt) {
