@@ -138,6 +138,7 @@
   };
 
   window.data = {
+    offerTypes: offerTypes,
     getAdvertisements: getAdvertisements,
     openPopup: openPopup,
     closePopup: closePopup,
