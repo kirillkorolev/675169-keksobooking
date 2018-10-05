@@ -85,4 +85,14 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  var formSubmit = document.queryselector('.ad-form__submit');
+  var form = document.querySelector('.ad-form');
+
+  formSubmit.addEventListener('submit', function (evt) {
+    window.backend.load(new FormData(form), function () {
+      form.classList.add('ad-form--disabled');
+    });
+    evt.preventDefault();
+  });
 })();

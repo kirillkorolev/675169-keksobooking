@@ -121,7 +121,10 @@
   };
 
   createPopup();
-  createPins();
+
+  window.backend.download(function () {
+    createPins();
+  });
 
   var mapPinMain = document.querySelector('.map__pin--main');
   mapPinMain.addEventListener('mouseup', enableForm);
