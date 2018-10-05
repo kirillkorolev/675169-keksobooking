@@ -22,7 +22,6 @@ var load = function (onLoad, onError) {
   xhr.addEventListener('load', function () {
     if (xhr.status === 200) {
       onLoad(xhr.response);
-      createSuccess();
     } else {
       onError(xhr.response);
       createError();
@@ -58,6 +57,6 @@ var send = function (data, onLoad, onError) {
 };
 
 window.backend = {
-  send: load,
-  load: send
+  load: load,
+  send: send
 };
