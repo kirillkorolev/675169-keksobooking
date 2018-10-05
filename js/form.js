@@ -86,7 +86,7 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var formSubmit = document.queryselector('.ad-form__submit');
+  var formSubmit = document.querySelector('.ad-form__submit');
   var form = document.querySelector('.ad-form');
 
   formSubmit.addEventListener('submit', function (evt) {
