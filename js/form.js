@@ -90,9 +90,18 @@
   var form = document.querySelector('.ad-form');
 
   formSubmit.addEventListener('submit', function (evt) {
-    window.backend.send(new FormData(form), function () {
-      form.classList.add('ad-form--disabled');
-    });
+    window.backend.send(
+        new FormData(form),
+        function () {
+          form.classList.remove('ad-form--disabled');
+          window.backend.createSuccess();
+        },
+        function () {
+          form.classList.add('ad-form--disabled');
+          window.backend.createError();
+        }
+    );
+
     evt.preventDefault();
   });
 })();

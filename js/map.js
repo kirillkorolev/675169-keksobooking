@@ -122,9 +122,14 @@
 
   createPopup();
 
-  window.backend.load(function () {
-    createPins();
-  });
+  window.backend.load(
+      function () {
+        createPins();
+      },
+      function () {
+        window.backend.createError();
+      }
+  );
 
   var mapPinMain = document.querySelector('.map__pin--main');
   mapPinMain.addEventListener('mouseup', enableForm);

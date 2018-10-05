@@ -137,11 +137,27 @@
     }
   };
 
+  var createError = function () {
+    var main = document.querySelector('.main');
+    var templateError = document.querySelector('#error').content;
+    var error = templateError.cloneNode(true);
+    main.appendChild(error);
+  };
+
+  var createSuccess = function () {
+    var main = document.querySelector('.main');
+    var templateSuccess = document.querySelector('#success').content;
+    var success = templateSuccess.cloneNode(true);
+    main.appendChild(success);
+  };
+
   window.data = {
     offerTypes: offerTypes,
     getAdvertisements: getAdvertisements,
     openPopup: openPopup,
     closePopup: closePopup,
-    togglePins: togglePins
+    togglePins: togglePins,
+    createError: createError,
+    createSuccess: createSuccess
   };
 })();
