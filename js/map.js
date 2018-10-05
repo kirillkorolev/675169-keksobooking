@@ -122,7 +122,7 @@
 
   createPopup();
 
-  window.backend.download(function () {
+  window.backend.load(function () {
     createPins();
   });
 
