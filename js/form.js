@@ -86,20 +86,22 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var formSubmit = document.querySelector('.ad-form__submit');
   var form = document.querySelector('.ad-form');
 
-  formSubmit.addEventListener('submit', function (evt) {
+  var resetForm = function () {
+    form.reset();
+    form.classList.remove('ad-form--disabled');
+  };
+
+  form.addEventListener('submit', function (evt) {
     window.backend.send(
         new FormData(form),
         function () {
-          form.classList.remove('ad-form--disabled');
-          window.backend.createSuccess();
+          resetForm();
+          window.data.showSuccessMessage();
         },
-        function () {
-          form.classList.add('ad-form--disabled');
-          window.backend.createError();
-        }
+
+        window.data.showErrorMessage
     );
 
     evt.preventDefault();
