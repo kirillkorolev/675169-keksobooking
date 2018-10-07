@@ -22,13 +22,6 @@
 
     map.insertBefore(listing, map.querySelector('.map__filters-container'));
     var popup = document.querySelector('.popup');
-    var popupPhotos = popup.querySelector('.popup__photos');
-
-    for (var i = 0; i < 2; i++) {
-      var popupPhoto = popupPhotos.querySelector('img').cloneNode(true);
-      popupPhotos.appendChild(popupPhoto);
-    }
-
     var closeButton = popup.querySelector('button');
     closeButton.addEventListener('click', window.data.closePopup);
 
@@ -69,19 +62,24 @@
         advertisement.offer.description
     );
 
-    var popupPhotos = popup.querySelectorAll('.popup__photos img');
-
-    for (var i = 0; i < advertisement.offer.photos.length; i++) {
-      popupPhotos[i].src = advertisement.offer.photos[i];
+    var popupPhotos = popup.querySelector('.popup__photos');
+    while (popupPhotos.firstChild) {
+      popupPhotos.removeChild(popupPhotos.firstChild);
     }
+
+    var template = document.querySelector('#card').content;
+    for (var i = 0; i < advertisement.offer.photos.length; i++) {
+      var photo = template.querySelector('.popup__photo').cloneNode(true);
+      photo.src = advertisement.offer.photos[i];
+      popupPhotos.appendChild(photo);
+    }
+
     var avatar = popup.querySelector('.popup__avatar');
     avatar.src = advertisement.author.avatar;
   };
 
-  var createPins = function () {
-    var advertisements = window.data.getAdvertisements();
+  var createPins = function (advertisements) {
     var map = document.querySelector('.map');
-
     var template = document.querySelector('#pin').content;
 
     for (var i = 0; i < advertisements.length; i++) {
@@ -121,7 +119,8 @@
   };
 
   createPopup();
-  createPins();
+
+  window.backend.load(createPins, window.data.showErrorMessage);
 
   var mapPinMain = document.querySelector('.map__pin--main');
   mapPinMain.addEventListener('mouseup', enableForm);
