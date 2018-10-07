@@ -49,27 +49,31 @@
     main.appendChild(block);
   };
 
-  var closeMessage = function (tag) {
+  var closeMessage = function (selector) {
+    var block = document.querySelector(selector);
+    block.classList.add('hidden');
+    document.removeEventListener('click', closeMessage);
+  };
+
+  var setCloseHandler = function (selector) {
     document.addEventListener('click', function () {
-      var block = document.querySelector(tag);
-      block.classList.add('hidden');
+      closeMessage(selector);
     });
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
-        var block = document.querySelector(tag);
-        block.classList.add('hidden');
+        closeMessage(selector);
       }
     });
   };
 
   var showErrorMessage = function () {
     showMessage('#error');
-    closeMessage('.error');
+    setCloseHandler('.error');
   };
 
   var showSuccessMessage = function () {
     showMessage('#success');
-    closeMessage('.success');
+    setCloseHandler('.success');
   };
 
   window.data = {
