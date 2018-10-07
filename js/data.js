@@ -42,38 +42,36 @@
     }
   };
 
+  var hideMessage = function (selector) {
+    var block = document.querySelector(selector);
+    block.classList.add('hidden');
+  };
+
+  var setHideHandlers = function (selector) {
+    document.addEventListener('click', function () {
+      hideMessage(selector);
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        hideMessage(selector);
+      }
+    });
+  };
+
   var showMessage = function (selector) {
     var main = document.querySelector('main');
     var templateError = document.querySelector(selector).content;
     var block = templateError.cloneNode(true);
     main.appendChild(block);
-  };
-
-  var closeMessage = function (selector) {
-    var block = document.querySelector(selector);
-    block.classList.add('hidden');
-    document.removeEventListener('click', closeMessage);
-  };
-
-  var setCloseHandler = function (selector) {
-    document.addEventListener('click', function () {
-      closeMessage(selector);
-    });
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
-        closeMessage(selector);
-      }
-    });
+    setHideHandlers(selector);
   };
 
   var showErrorMessage = function () {
     showMessage('#error');
-    setCloseHandler('.error');
   };
 
   var showSuccessMessage = function () {
     showMessage('#success');
-    setCloseHandler('.success');
   };
 
   window.data = {
