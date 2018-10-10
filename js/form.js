@@ -145,11 +145,6 @@
       '.ad-form__upload input[type=file]'
   );
   var formPhoto = document.querySelector('.ad-form__photo');
-  for (var i = 0; i <= 2; i++) {
-    var img = document.createElement('img').cloneNode(true);
-    formPhoto.appendChild(img);
-  }
-  var housingPhotoPreview = document.querySelector('.ad-form__photo img');
 
   avatarChooser.addEventListener('change', function () {
     var file = avatarChooser.files[0];
@@ -182,7 +177,9 @@
       var reader = new FileReader();
 
       reader.addEventListener('load', function () {
-        housingPhotoPreview.src = reader.result;
+        var img = document.createElement('img').cloneNode(true);
+        img.src = reader.result;
+        formPhoto.appendChild(img);
       });
 
       reader.readAsDataURL(file);
