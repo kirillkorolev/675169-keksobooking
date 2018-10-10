@@ -109,6 +109,28 @@
     evt.preventDefault();
   });
 
+  // ====//
+
+  var clearForm = document.querySelector('.ad-form__reset');
+  var resetFormClickHandler = function () {
+    var adForm = document.querySelector('.ad-form');
+    var mapFilters = document.querySelector('.map__filters');
+    var map = document.querySelector('.map');
+    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main');
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].classList.add('hidden');
+    }
+    adForm.classList.add('ad-form--disabled');
+    map.classList.add('map--faded');
+    mapFilters.classList.add('ad-form--disabled');
+
+    form.reset();
+  };
+
+  clearForm.addEventListener('click', resetFormClickHandler);
+
+  // === //
+
   var avatarChooser = document.querySelector(
       '.ad-form__field input[type=file]'
   );
