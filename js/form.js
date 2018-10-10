@@ -116,6 +116,8 @@
     var adForm = document.querySelector('.ad-form');
     var mapFilters = document.querySelector('.map__filters');
     var map = document.querySelector('.map');
+    var avatarPreview = document.querySelector('.ad-form-header img');
+    var housingPhotoPreview = document.querySelector('.ad-form__photo img');
     var pins = map.querySelectorAll('.map__pin:not(.map__pin--main');
     for (var i = 0; i < pins.length; i++) {
       pins[i].classList.add('hidden');
@@ -123,6 +125,8 @@
     adForm.classList.add('ad-form--disabled');
     map.classList.add('map--faded');
     mapFilters.classList.add('ad-form--disabled');
+    avatarPreview.classList.add('visually-hidden');
+    housingPhotoPreview.classList.add('visually-hidden');
 
     form.reset();
   };
@@ -139,8 +143,10 @@
       '.ad-form__upload input[type=file]'
   );
   var formPhoto = document.querySelector('.ad-form__photo');
-  var img = document.createElement('img');
-  formPhoto.appendChild(img);
+  for (var i = 0; i <= 2; i++) {
+    var img = document.createElement('img').cloneNode(true);
+    formPhoto.appendChild(img);
+  }
   var housingPhotoPreview = document.querySelector('.ad-form__photo img');
 
   avatarChooser.addEventListener('change', function () {

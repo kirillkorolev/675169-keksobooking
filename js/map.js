@@ -94,7 +94,7 @@
 
   var createPins = function (advertisements) {
     var map = document.querySelector('.map');
-    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main');
+    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < pins.length; i++) {
       pins[i].remove();
     }
