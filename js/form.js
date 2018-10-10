@@ -26,6 +26,13 @@
   var formAddress = document.querySelector('#address');
 
   var markerHandle = document.querySelector('.map__pin--main');
+  var setPositionX = function (x) {
+    markerHandle.style.left = x + 'px';
+  };
+  var setPositionY = function (y) {
+    markerHandle.style.top = y + 'px';
+  };
+
   markerHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -48,10 +55,6 @@
         y: moveEvt.clientY
       };
 
-      var setPositionX = function (x) {
-        markerHandle.style.left = x + 'px';
-      };
-
       var x = markerHandle.offsetLeft - shift.x;
 
       if (x < 0) {
@@ -61,10 +64,6 @@
       } else {
         setPositionX(x);
       }
-
-      var setPositionY = function (y) {
-        markerHandle.style.top = y + 'px';
-      };
 
       var y = markerHandle.offsetTop - shift.y;
       if (y < 130) {
@@ -129,6 +128,9 @@
     housingPhotoPreview.classList.add('visually-hidden');
 
     form.reset();
+
+    setPositionX(570);
+    setPositionY(375);
   };
 
   clearForm.addEventListener('click', resetFormClickHandler);
