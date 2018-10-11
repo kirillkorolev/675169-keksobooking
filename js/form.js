@@ -26,29 +26,13 @@
   var arriavalTime = document.querySelector('#timein');
   var departureTime = document.querySelector('#timeout');
 
-  var arriavalTimeChangeHandler = function () {
-    if (arriavalTime.value === '12:00') {
-      departureTime.value = '12:00';
-    } else if (arriavalTime.value === '13:00') {
-      departureTime.value = '13:00';
-    } else if (arriavalTime.value === '14:00') {
-      departureTime.value = '14:00';
-    }
-  };
+  arriavalTime.addEventListener('change', function () {
+    departureTime.value = arriavalTime.value;
+  });
 
-  arriavalTime.addEventListener('change', arriavalTimeChangeHandler);
-
-  var departureTimeChangeHandler = function () {
-    if (departureTime.value === '12:00') {
-      arriavalTime.value = '12:00';
-    } else if (departureTime.value === '13:00') {
-      arriavalTime.value = '13:00';
-    } else if (departureTime.value === '14:00') {
-      arriavalTime.value = '14:00';
-    }
-  };
-
-  departureTime.addEventListener('change', departureTimeChangeHandler);
+  departureTime.addEventListener('change', function () {
+    arriavalTime.value = departureTime.value;
+  });
 
   var formAddress = document.querySelector('#address');
 
@@ -142,7 +126,7 @@
     var map = document.querySelector('.map');
     var avatarPreview = document.querySelector('.ad-form-header img');
     var housingPhotoPreview = document.querySelector('.ad-form__photo img');
-    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main');
+    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < pins.length; i++) {
       pins[i].classList.add('hidden');
     }
