@@ -42,36 +42,42 @@
     }
   };
 
-  var hideMessage = function (selector) {
-    var block = document.querySelector(selector);
-    block.classList.add('hidden');
-  };
-
   var setHideHandlers = function (selector) {
-    document.addEventListener('click', function () {
-      hideMessage(selector);
-    });
-    document.addEventListener('keydown', function (evt) {
+    var hideMessage = function () {
+      var block = document.querySelector(selector);
+      block.remove();
+      document.removeEventListener('click', hideMessageByClick);
+      document.removeEventListener('keydown', hideMessageByEsc);
+    };
+
+    var hideMessageByClick = function () {
+      hideMessage();
+    };
+
+    var hideMessageByEsc = function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
-        hideMessage(selector);
+        hideMessage();
       }
-    });
+    };
+
+    document.addEventListener('click', hideMessageByClick);
+    document.addEventListener('keydown', hideMessageByEsc);
   };
 
-  var showMessage = function (selector) {
+  var showMessage = function (copiedSelector, selector) {
     var main = document.querySelector('main');
-    var templateError = document.querySelector(selector).content;
+    var templateError = document.querySelector(copiedSelector).content;
     var block = templateError.cloneNode(true);
     main.appendChild(block);
     setHideHandlers(selector);
   };
 
   var showErrorMessage = function () {
-    showMessage('#error');
+    showMessage('#error', '.error');
   };
 
   var showSuccessMessage = function () {
-    showMessage('#success');
+    showMessage('#success', '.success');
   };
 
   window.data = {

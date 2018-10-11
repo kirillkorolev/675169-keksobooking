@@ -37,7 +37,6 @@
   };
 
   arriavalTime.addEventListener('change', arriavalTimeChangeHandler);
-  // arriavalTime.removeEventListener('change', arriavalTimeChangeHandler);
 
   var departureTimeChangeHandler = function () {
     if (departureTime.value === '12:00') {
@@ -136,8 +135,6 @@
     evt.preventDefault();
   });
 
-  // ====//
-
   var clearForm = document.querySelector('.ad-form__reset');
   var resetFormClickHandler = function () {
     var adForm = document.querySelector('.ad-form');
@@ -162,8 +159,6 @@
   };
 
   clearForm.addEventListener('click', resetFormClickHandler);
-
-  // === //
 
   var avatarChooser = document.querySelector(
       '.ad-form__field input[type=file]'
@@ -195,23 +190,27 @@
   });
 
   housingPhotoChooser.addEventListener('change', function () {
-    var file = housingPhotoChooser.files[0];
-    var fileName = file.name.toLowerCase();
+    for (var i = 0; i <= housingPhotoChooser.files.length; i++) {
+      var file = housingPhotoChooser.files[i];
+      var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
-
-    if (matches) {
-      var reader = new FileReader();
-
-      reader.addEventListener('load', function () {
-        var img = document.createElement('img').cloneNode(true);
-        img.src = reader.result;
-        formPhoto.appendChild(img);
+      var matches = FILE_TYPES.some(function (it) {
+        return fileName.endsWith(it);
       });
 
-      reader.readAsDataURL(file);
+      if (matches) {
+        (function () {
+          var reader = new FileReader();
+
+          reader.addEventListener('load', function () {
+            var img = document.createElement('img').cloneNode(true);
+            img.src = reader.result;
+            formPhoto.appendChild(img);
+          });
+
+          reader.readAsDataURL(file);
+        })();
+      }
     }
   });
 })();
