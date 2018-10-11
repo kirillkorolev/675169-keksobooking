@@ -23,6 +23,34 @@
   numberGuests.addEventListener('change', validate);
   numberRooms.addEventListener('change', validate);
 
+  var arriavalTime = document.querySelector('#timein');
+  var departureTime = document.querySelector('#timeout');
+
+  var arriavalTimeChangeHandler = function () {
+    if (arriavalTime.value === '12:00') {
+      departureTime.value = '12:00';
+    } else if (arriavalTime.value === '13:00') {
+      departureTime.value = '13:00';
+    } else if (arriavalTime.value === '14:00') {
+      departureTime.value = '14:00';
+    }
+  };
+
+  arriavalTime.addEventListener('change', arriavalTimeChangeHandler);
+  // arriavalTime.removeEventListener('change', arriavalTimeChangeHandler);
+
+  var departureTimeChangeHandler = function () {
+    if (departureTime.value === '12:00') {
+      arriavalTime.value = '12:00';
+    } else if (departureTime.value === '13:00') {
+      arriavalTime.value = '13:00';
+    } else if (departureTime.value === '14:00') {
+      arriavalTime.value = '14:00';
+    }
+  };
+
+  departureTime.addEventListener('change', departureTimeChangeHandler);
+
   var formAddress = document.querySelector('#address');
 
   var markerHandle = document.querySelector('.map__pin--main');
@@ -144,6 +172,7 @@
   var housingPhotoChooser = document.querySelector(
       '.ad-form__upload input[type=file]'
   );
+
   var formPhoto = document.querySelector('.ad-form__photo');
 
   avatarChooser.addEventListener('change', function () {
