@@ -52,7 +52,6 @@
       y: evt.clientY
     };
     var onMouseMove = function (moveEvt) {
-      var markerHeight = 84;
       var marketWidth = 62;
       moveEvt.preventDefault();
 
