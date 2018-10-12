@@ -84,7 +84,7 @@
       } else {
         setPositionY(y);
       }
-      formAddress.value = x + marketWidth / 2 + ', ' + (y + markerHeight);
+      formAddress.value = x + marketWidth / 2 + ', ' + y;
     };
 
     var onMouseUp = function (upEvt) {
@@ -124,8 +124,8 @@
     var adForm = document.querySelector('.ad-form');
     var mapFilters = document.querySelector('.map__filters');
     var map = document.querySelector('.map');
-    var avatarPreview = document.querySelector('.ad-form-header img');
-    var housingPhotoPreview = document.querySelector('.ad-form__photo img');
+    var avatarPreview = document.querySelector('.ad-form-header__preview img');
+    var housingPhotoPreview = document.querySelectorAll('.ad-form__photo img');
     var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < pins.length; i++) {
       pins[i].classList.add('hidden');
@@ -133,8 +133,13 @@
     adForm.classList.add('ad-form--disabled');
     map.classList.add('map--faded');
     mapFilters.classList.add('ad-form--disabled');
-    avatarPreview.classList.add('visually-hidden');
-    housingPhotoPreview.classList.add('visually-hidden');
+    avatarPreview.src = 'img/muffin-grey.svg';
+
+    if (housingPhotoPreview) {
+      for (i = 0; i < housingPhotoPreview.length; i++) {
+        housingPhotoPreview[i].classList.add('visually-hidden');
+      }
+    }
 
     form.reset();
 
