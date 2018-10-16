@@ -66,10 +66,7 @@
         '.popup__text--price',
         advertisement.offer.price + '₽/ночь'
     );
-    setListingTextContent(
-        '.popup__type',
-        window.constants.OFFER_TYPE[advertisement.offer.type]
-    );
+    setListingTextContent('.popup__type', window.constants.OFFER_TYPES[advertisement.offer.type]);
     setListingTextContent('.popup__text--capacity', textCapacity);
     setListingTextContent('.popup__text--time', textTime);
     setListingTextContent(
@@ -80,6 +77,7 @@
     var template = document.querySelector('#card').content;
     var features = popup.querySelector('.popup__features');
     clearNode(features);
+
     for (i = 0; i < advertisement.offer.features.length; i++) {
       var feature = template
         .querySelector('.popup__feature--' + advertisement.offer.features[i])
