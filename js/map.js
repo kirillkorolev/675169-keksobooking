@@ -1,6 +1,19 @@
 'use strict';
 
 (function () {
+  var MAX_PRICE = 10000;
+  var MIN_PRICE = 50000;
+/*
+  var disableForm = function () {
+    var adForm = document.querySelector('.ad-form');
+    var formFieldsets = adForm.querySelectorAll('fieldset');
+    for (var i = 0; i < formFieldsets.length; i++) {
+      formFieldsets.setAttribute('disabled');
+    }
+  };
+
+  disableForm();
+*/
   var togglePins = function (show) {
     var mapPins = document.querySelectorAll(
         '.map .map__pin:not(.map__pin--main)'
@@ -12,6 +25,12 @@
       } else {
         mapPins[i].classList.add('hidden');
       }
+    }
+  };
+
+  var clearNode = function (node) {
+    while (node.firstChild) {
+      node.removeChild(node.firstChild);
     }
   };
 
@@ -52,22 +71,28 @@
     );
     setListingTextContent(
         '.popup__type',
-        window.data.offerTypes[advertisement.offer.type]
+        window.constants.OFFER_TYPE[advertisement.offer.type]
     );
     setListingTextContent('.popup__text--capacity', textCapacity);
     setListingTextContent('.popup__text--time', textTime);
-    setListingTextContent('.popup__features', advertisement.offer.features);
     setListingTextContent(
         '.popup__description',
         advertisement.offer.description
     );
 
-    var popupPhotos = popup.querySelector('.popup__photos');
-    while (popupPhotos.firstChild) {
-      popupPhotos.removeChild(popupPhotos.firstChild);
+    var template = document.querySelector('#card').content;
+    var features = popup.querySelector('.popup__features');
+    clearNode(features);
+    for (i = 0; i < advertisement.offer.features.length; i++) {
+      var feature = template
+        .querySelector('.popup__feature--' + advertisement.offer.features[i])
+        .cloneNode(true);
+      features.appendChild(feature);
     }
 
-    var template = document.querySelector('#card').content;
+    var popupPhotos = popup.querySelector('.popup__photos');
+    clearNode(popupPhotos);
+
     for (var i = 0; i < advertisement.offer.photos.length; i++) {
       var photo = template.querySelector('.popup__photo').cloneNode(true);
       photo.src = advertisement.offer.photos[i];
@@ -95,12 +120,15 @@
   var createPins = function (advertisements) {
     var map = document.querySelector('.map');
     var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+
     for (var i = 0; i < pins.length; i++) {
       pins[i].remove();
     }
     var template = document.querySelector('#pin').content;
 
-    for (i = 0; i < advertisements.length; i++) {
+    var amount = advertisements.length > 5 ? 5 : advertisements.length;
+
+    for (i = 0; i < amount; i++) {
       var element = template.querySelector('.map__pin').cloneNode(true);
       var image = element.querySelector('img');
       element.style.left = advertisements[i].location.x + 'px';
@@ -109,12 +137,15 @@
       image.alt = advertisements[i].offer.title;
 
       map.appendChild(element);
-      (function (index) {
+      var showPopup = function (index) {
         element.addEventListener('click', function () {
           comletePopup(advertisements[index]);
           window.data.openPopup();
+          element.classList.add('.map__pin--active');
         });
-      })(i);
+      };
+
+      showPopup(i);
     }
   };
 
@@ -159,11 +190,11 @@
     var comparePrice = function (advertisement) {
       return (
         filters.price === 'any' ||
-        (advertisement.offer.price < 10000 && filters.price === 'low') ||
-        (advertisement.offer.price >= 10000 &&
-          advertisement.offer.price < 50000 &&
+        (advertisement.offer.price < MAX_PRICE && filters.price === 'low') ||
+        (advertisement.offer.price >= MAX_PRICE &&
+          advertisement.offer.price < MIN_PRICE &&
           filters.price === 'middle') ||
-        (advertisement.offer.price >= 50000 && filters.price === 'high')
+        (advertisement.offer.price >= MIN_PRICE && filters.price === 'high')
       );
     };
 
@@ -202,16 +233,17 @@
     applyFilters();
   };
 
-  var housingType = document.querySelector('#housing-type');
-  var housingPrice = document.querySelector('#housing-price');
-  var housingRoms = document.querySelector('#housing-rooms');
-  var housingGuests = document.querySelector('#housing-guests');
-  var wifi = document.querySelector('#filter-wifi');
-  var dishwasher = document.querySelector('#filter-dishwasher');
-  var parking = document.querySelector('#filter-parking');
-  var washer = document.querySelector('#filter-washer');
-  var elevator = document.querySelector('#filter-elevator');
-  var conditioner = document.querySelector('#filter-conditioner');
+  var mapFilters = document.querySelector('.map__filters');
+  var housingType = mapFilters.querySelector('#housing-type');
+  var housingPrice = mapFilters.querySelector('#housing-price');
+  var housingRoms = mapFilters.querySelector('#housing-rooms');
+  var housingGuests = mapFilters.querySelector('#housing-guests');
+  var wifi = mapFilters.querySelector('#filter-wifi');
+  var dishwasher = mapFilters.querySelector('#filter-dishwasher');
+  var parking = mapFilters.querySelector('#filter-parking');
+  var washer = mapFilters.querySelector('#filter-washer');
+  var elevator = mapFilters.querySelector('#filter-elevator');
+  var conditioner = mapFilters.querySelector('#filter-conditioner');
 
   housingType.addEventListener('change', filterChangeHandler);
   housingPrice.addEventListener('change', filterChangeHandler);

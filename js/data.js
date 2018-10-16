@@ -1,17 +1,8 @@
 'use strict';
 
 (function () {
-  var ESC_KEYCODE = 27;
-
-  var offerTypes = {
-    flat: 'Квартира',
-    palace: 'Дворец',
-    house: 'Дом',
-    bungalo: 'Бунагло'
-  };
-
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === window.constants.ESC_KEYCODE) {
       closePopup();
     }
   };
@@ -55,7 +46,7 @@
     };
 
     var hideMessageByEsc = function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
+      if (evt.keyCode === window.constants.ESC_KEYCODE) {
         hideMessage();
       }
     };
@@ -81,7 +72,6 @@
   };
 
   window.data = {
-    offerTypes: offerTypes,
     openPopup: openPopup,
     closePopup: closePopup,
     togglePins: togglePins,

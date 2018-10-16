@@ -5,7 +5,7 @@ var createXhr = function (url, method, onSuccess, onError) {
   xhr.responseType = 'json';
 
   xhr.addEventListener('load', function () {
-    if (xhr.status === 200) {
+    if (xhr.status === window.constants.OK_CODE) {
       onSuccess(xhr.response);
     } else {
       onError(xhr.response);
@@ -15,7 +15,7 @@ var createXhr = function (url, method, onSuccess, onError) {
   xhr.addEventListener('timeout', function () {
     onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
   });
-  xhr.timeout = 10000;
+  xhr.timeout = window.constants.TIMEOUT;
 
   xhr.open(method, url);
   return xhr;

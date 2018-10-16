@@ -1,10 +1,9 @@
 'use strict';
 
 (function () {
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-
-  var numberRooms = document.querySelector('#room_number');
-  var numberGuests = document.querySelector('#capacity');
+  var form = document.querySelector('.ad-form');
+  var numberRooms = form.querySelector('#room_number');
+  var numberGuests = form.querySelector('#capacity');
 
   var validate = function () {
     var str = '';
@@ -23,8 +22,8 @@
   numberGuests.addEventListener('change', validate);
   numberRooms.addEventListener('change', validate);
 
-  var arriavalTime = document.querySelector('#timein');
-  var departureTime = document.querySelector('#timeout');
+  var arriavalTime = form.querySelector('#timein');
+  var departureTime = form.querySelector('#timeout');
 
   arriavalTime.addEventListener('change', function () {
     departureTime.value = arriavalTime.value;
@@ -34,7 +33,38 @@
     arriavalTime.value = departureTime.value;
   });
 
-  var formAddress = document.querySelector('#address');
+  var formType = form.querySelector('#type');
+  var priceInput = form.querySelector('#price');
+
+  var validatePrice = function () {
+    var str = '';
+    if (
+      (formType.value === 'flat' && priceInput.value < 1000) ||
+      (formType.value === 'house' && priceInput.value < 5000) ||
+      (formType.value === 'palace' && priceInput.value < 10000)
+    ) {
+      str = 'Слишком маленькая цена!';
+    }
+    priceInput.setCustomValidity(str);
+  };
+
+  var typeChangeHandler = function () {
+    validatePrice();
+    var prices = {
+      bungalo: 0,
+      flat: 1000,
+      house: 5000,
+      palace: 10000
+    };
+    priceInput.placeholder = prices[formType.value];
+  };
+
+  formType.addEventListener('change', typeChangeHandler);
+  priceInput.addEventListener('change', validatePrice);
+
+  typeChangeHandler();
+
+  var formAddress = form.querySelector('#address');
 
   var markerHandle = document.querySelector('.map__pin--main');
   var setPositionX = function (x) {
@@ -52,7 +82,6 @@
       y: evt.clientY
     };
     var onMouseMove = function (moveEvt) {
-      var marketWidth = 62;
       moveEvt.preventDefault();
 
       var shift = {
@@ -69,21 +98,21 @@
 
       if (x < 0) {
         setPositionX(0);
-      } else if (x > 1200 - marketWidth) {
-        setPositionX(1200 - marketWidth);
+      } else if (x > window.constants.WIDTH_X - window.constants.MARKER_WIDTH) {
+        setPositionX(window.constants.WIDTH_X - window.constants.MARKER_WIDTH);
       } else {
         setPositionX(x);
       }
 
       var y = markerHandle.offsetTop - shift.y;
-      if (y < 130) {
-        setPositionY(130);
-      } else if (y > 630) {
-        setPositionY(630);
+      if (y < window.constants.TOP_Y) {
+        setPositionY(window.constants.TOP_Y);
+      } else if (y > window.constants.BOTTOM_Y) {
+        setPositionY(window.constants.BOTTOM_Y);
       } else {
         setPositionY(y);
       }
-      formAddress.value = x + marketWidth / 2 + ', ' + y;
+      formAddress.value = x + window.constants.MARKER_WIDTH / 2 + ', ' + y;
     };
 
     var onMouseUp = function (upEvt) {
@@ -97,11 +126,75 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var form = document.querySelector('.ad-form');
+  var resetAddress = function () {
+    formAddress.value =
+      window.constants.START_X +
+      window.constants.MARKER_WIDTH / 2 +
+      ', ' +
+      window.constants.START_Y;
+  };
+
+  var resetFilters = function () {
+    var mapFilters = document.querySelector('.map__filters');
+    var mapFeatures = document.querySelector('.map__features');
+    var filters = [
+      '#housing-type',
+      '#housing-price',
+      '#housing-rooms',
+      '#housing-guests'
+    ];
+
+    var checkboxes = [
+      '#filter-wifi',
+      '#filter-dishwasher',
+      '#filter-parking',
+      '#filter-washer',
+      '#filter-elevator',
+      '#filter-conditioner'
+    ];
+
+    filters.forEach(function (filter) {
+      mapFilters.querySelector(filter).value = 'any';
+    });
+
+    checkboxes.forEach(function (checkbox) {
+      mapFeatures.querySelector(checkbox).checked = false;
+    });
+  };
 
   var resetForm = function () {
+    var map = document.querySelector('.map');
+    var avatarPreview = document.querySelector('.ad-form-header__preview img');
+    var housingPhotoPreview = document.querySelectorAll('.ad-form__photo img');
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var popup = document.querySelector('.popup');
+    var mapFilters = document.querySelector('.map__filters');
+
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].classList.add('hidden');
+    }
+
+    form.classList.add('ad-form--disabled');
+    map.classList.add('map--faded');
+
+    mapFilters.classList.add('ad-form--disabled');
+    avatarPreview.src = 'img/muffin-grey.svg';
+
+    popup.classList.add('hidden');
+
+    if (housingPhotoPreview) {
+      for (i = 0; i < housingPhotoPreview.length; i++) {
+        housingPhotoPreview[i].classList.add('visually-hidden');
+      }
+    }
+
     form.reset();
-    form.classList.remove('ad-form--disabled');
+
+    setPositionX(window.constants.START_X);
+    setPositionY(window.constants.START_Y);
+
+    resetFilters();
+    resetAddress();
   };
 
   form.addEventListener('submit', function (evt) {
@@ -118,51 +211,24 @@
     evt.preventDefault();
   });
 
-  var clearForm = document.querySelector('.ad-form__reset');
-  var resetFormClickHandler = function () {
-    var adForm = document.querySelector('.ad-form');
-    var mapFilters = document.querySelector('.map__filters');
-    var map = document.querySelector('.map');
-    var avatarPreview = document.querySelector('.ad-form-header__preview img');
-    var housingPhotoPreview = document.querySelectorAll('.ad-form__photo img');
-    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].classList.add('hidden');
-    }
-    adForm.classList.add('ad-form--disabled');
-    map.classList.add('map--faded');
-    mapFilters.classList.add('ad-form--disabled');
-    avatarPreview.src = 'img/muffin-grey.svg';
+  var clearForm = form.querySelector('.ad-form__reset');
 
-    if (housingPhotoPreview) {
-      for (i = 0; i < housingPhotoPreview.length; i++) {
-        housingPhotoPreview[i].classList.add('visually-hidden');
-      }
-    }
+  resetAddress();
+  clearForm.addEventListener('click', resetForm);
 
-    form.reset();
-
-    setPositionX(570);
-    setPositionY(375);
-  };
-
-  clearForm.addEventListener('click', resetFormClickHandler);
-
-  var avatarChooser = document.querySelector(
-      '.ad-form__field input[type=file]'
-  );
-  var avatarPreview = document.querySelector('.ad-form-header__preview img');
-  var housingPhotoChooser = document.querySelector(
+  var avatarChooser = form.querySelector('.ad-form__field input[type=file]');
+  var avatarPreview = form.querySelector('.ad-form-header__preview img');
+  var housingPhotoChooser = form.querySelector(
       '.ad-form__upload input[type=file]'
   );
 
-  var formPhoto = document.querySelector('.ad-form__photo');
+  var formPhoto = form.querySelector('.ad-form__photo');
 
   avatarChooser.addEventListener('change', function () {
     var file = avatarChooser.files[0];
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
+    var matches = window.constants.FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);
     });
 
@@ -178,11 +244,11 @@
   });
 
   housingPhotoChooser.addEventListener('change', function () {
-    for (var i = 0; i <= housingPhotoChooser.files.length; i++) {
+    for (var i = 0; i < housingPhotoChooser.files.length; i++) {
       var file = housingPhotoChooser.files[i];
       var fileName = file.name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (it) {
+      var matches = window.constants.FILE_TYPES.some(function (it) {
         return fileName.endsWith(it);
       });
 
