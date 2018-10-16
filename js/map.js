@@ -1,19 +1,16 @@
 'use strict';
 
 (function () {
-  var MAX_PRICE = 10000;
-  var MIN_PRICE = 50000;
-/*
   var disableForm = function () {
     var adForm = document.querySelector('.ad-form');
     var formFieldsets = adForm.querySelectorAll('fieldset');
     for (var i = 0; i < formFieldsets.length; i++) {
-      formFieldsets.setAttribute('disabled');
+      formFieldsets[i].setAttribute('disabled', 'true');
     }
   };
 
   disableForm();
-*/
+
   var togglePins = function (show) {
     var mapPins = document.querySelectorAll(
         '.map .map__pin:not(.map__pin--main)'
@@ -190,11 +187,11 @@
     var comparePrice = function (advertisement) {
       return (
         filters.price === 'any' ||
-        (advertisement.offer.price < MAX_PRICE && filters.price === 'low') ||
-        (advertisement.offer.price >= MAX_PRICE &&
-          advertisement.offer.price < MIN_PRICE &&
+        (advertisement.offer.price < window.constants.MAX_PRICE && filters.price === 'low') ||
+        (advertisement.offer.price >= window.constants.MAX_PRICE &&
+          advertisement.offer.price < window.constants.MIN_PRICE &&
           filters.price === 'middle') ||
-        (advertisement.offer.price >= MIN_PRICE && filters.price === 'high')
+        (advertisement.offer.price >= window.constants.MIN_PRICE && filters.price === 'high')
       );
     };
 

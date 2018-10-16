@@ -39,9 +39,12 @@
   var validatePrice = function () {
     var str = '';
     if (
-      (formType.value === 'flat' && priceInput.value < 1000) ||
-      (formType.value === 'house' && priceInput.value < 5000) ||
-      (formType.value === 'palace' && priceInput.value < 10000)
+      (formType.value === 'flat' &&
+        priceInput.value < window.constants.FLAT_MIN_PRICE) ||
+      (formType.value === 'house' &&
+        priceInput.value < window.constants.HOUSE_MIN_PRICE) ||
+      (formType.value === 'palace' &&
+        priceInput.value < window.constants.PALACE_MIN_PRICE)
     ) {
       str = 'Слишком маленькая цена!';
     }
@@ -134,6 +137,14 @@
       window.constants.START_Y;
   };
 
+  var disableForm = function () {
+    var adForm = document.querySelector('.ad-form');
+    var formFieldsets = adForm.querySelectorAll('fieldset');
+    for (var i = 0; i < formFieldsets.length; i++) {
+      formFieldsets[i].setAttribute('disabled', 'true');
+    }
+  };
+
   var resetFilters = function () {
     var mapFilters = document.querySelector('.map__filters');
     var mapFeatures = document.querySelector('.map__features');
@@ -193,6 +204,7 @@
     setPositionX(window.constants.START_X);
     setPositionY(window.constants.START_Y);
 
+    disableForm();
     resetFilters();
     resetAddress();
   };
