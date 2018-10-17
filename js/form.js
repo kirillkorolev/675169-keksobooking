@@ -115,7 +115,7 @@
       } else {
         setPositionY(y);
       }
-      formAddress.value = x + window.constants.MARKER_WIDTH / 2 + ', ' + y;
+      formAddress.value = (x + window.constants.MARKER_WIDTH / 2) + ', ' + y;
     };
 
     var onMouseUp = function (upEvt) {
@@ -132,7 +132,6 @@
   var resetAddress = function () {
     formAddress.value =
       window.constants.START_X +
-      window.constants.MARKER_WIDTH / 2 +
       ', ' +
       window.constants.START_Y;
   };
@@ -140,9 +139,9 @@
   var disableForm = function () {
     var adForm = document.querySelector('.ad-form');
     var formFieldsets = adForm.querySelectorAll('fieldset');
-    for (var i = 0; i < formFieldsets.length; i++) {
-      formFieldsets[i].setAttribute('disabled', 'true');
-    }
+    Array.from(formFieldsets).forEach(function (formFieldset) {
+      formFieldset.setAttribute('disabled', 'true');
+    });
   };
 
   var resetFilters = function () {
@@ -181,9 +180,9 @@
     var popup = document.querySelector('.popup');
     var mapFilters = document.querySelector('.map__filters');
 
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].classList.add('hidden');
-    }
+    Array.from(pins).forEach(function (pin) {
+      pin.classList.add('hidden');
+    });
 
     form.classList.add('ad-form--disabled');
     map.classList.add('map--faded');
@@ -194,9 +193,9 @@
     popup.classList.add('hidden');
 
     if (housingPhotoPreview) {
-      for (i = 0; i < housingPhotoPreview.length; i++) {
-        housingPhotoPreview[i].classList.add('visually-hidden');
-      }
+      Array.from(housingPhotoPreview).forEach(function (photo) {
+        photo.classList.add('visually-hidden');
+      });
     }
 
     form.reset();

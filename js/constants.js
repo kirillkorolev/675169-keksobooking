@@ -2,8 +2,8 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var START_X = 570;
-  var START_Y = 375;
+  var START_X = 601;
+  var START_Y = 408;
   var WIDTH_X = 1200;
   var TOP_Y = 130;
   var BOTTOM_Y = 630;
@@ -15,6 +15,7 @@
   var FLAT_MIN_PRICE = 1000;
   var HOUSE_MIN_PRICE = 5000;
   var PALACE_MIN_PRICE = 10000;
+  var SHOWN_PINS_AMMOUNT = 5;
 
   var ESC_KEYCODE = 27;
 
@@ -40,6 +41,7 @@
     FLAT_MIN_PRICE: FLAT_MIN_PRICE,
     HOUSE_MIN_PRICE: HOUSE_MIN_PRICE,
     PALACE_MIN_PRICE: PALACE_MIN_PRICE,
+    SHOWN_PINS_AMMOUNT: SHOWN_PINS_AMMOUNT,
 
     ESC_KEYCODE: ESC_KEYCODE,
 
